@@ -17,7 +17,6 @@ import { ActionsWrapper, Wrapper } from './styles'
 import TodoItem from '../TodoItem'
 import AddTodoModal from '../../containers/AddTodoModal'
 import EditTodoModal from '../../containers/EditTodoModal'
-import { log } from 'console'
 
 const stateTodoOptions = [
   {
@@ -28,7 +27,7 @@ const stateTodoOptions = [
   {
     key: 'todo', 
     value: 'todo', 
-    text: 'Todo'
+    text: 'On Progress'
   },
   {
     key: 'done', 
@@ -156,11 +155,8 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         return;
       }
       
-      // console.log(typeof todos.items)
-      // console.log(todos);
-      
       this.setState({
-        todos: [...this.state.todos, ...todos.items],
+        todos: [...this.state.todos, ...todos],
         lastKey,
         loadingTodos: false
       })

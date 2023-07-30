@@ -10,6 +10,7 @@ type TodoModalProps = {
   open: boolean
   header: string
   todo?: Todo
+  type: String 
 }
 
 export default function TodoModal(props: TodoModalProps){
@@ -20,13 +21,14 @@ export default function TodoModal(props: TodoModalProps){
     onClose,
     onSubmit,
     header,
-    todo
+    todo,
+    type
   } = props;
   
   const [task, setTask] = useState('')
   const [dueDate, setDueDate] = useState(() => new Date().toISOString().substring(0, 10))
   const [submitStatus, setSubmitStatus] = useState(false)
-
+  const [image, setImage] = useState("")
   const handleSubmit = async () => {
     setSubmitStatus(true)
     try{
@@ -35,7 +37,7 @@ export default function TodoModal(props: TodoModalProps){
         data.done = todo.done
       }
 
-      await onSubmit(data)
+      await onSubmit(data, image)
     } catch (e) {
       console.log(e)
     } finally {
@@ -59,6 +61,16 @@ export default function TodoModal(props: TodoModalProps){
     setDueDate(todo.dueDate)
   }, [todo])
 
+  const handleUploadImage = (e: any) => {
+    
+    if(!e.target.files || e.target.files.length === 0) {
+      setImage("")
+      return;
+    }
+
+    setImage(e.target.files[0])
+    
+  }
   return (
     <Modal 
       open={open}
@@ -85,6 +97,13 @@ export default function TodoModal(props: TodoModalProps){
             value={dueDate}
           />
         </InputGroup>
+        {
+        type === "UPDATE" && 
+         <InputGroup>
+          <InputLabel>Image</InputLabel>
+          <input type="file"accept="image/*" onChange={handleUploadImage}/>
+        </InputGroup>
+        }
       </Modal.Content>
 
       <Modal.Actions>

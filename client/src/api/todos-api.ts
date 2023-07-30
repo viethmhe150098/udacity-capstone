@@ -11,16 +11,19 @@ type GetTodosRes = {
 }
 export async function getTodos(idToken: string, filter: string): Promise<GetTodosRes> {
   console.log('Fetching todos')
-
-  let url = `${apiEndpoint}/todos?filterby=${filter}`
-
+  console.log(filter);
+  
+  let url = `${apiEndpoint}/todos?filter=${filter}`
+  console.log(url);
+  
   const response = await Axios.get(url, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
     },
   })
-  console.log('Todos:', response.data)
+  console.log(idToken);
+  // console.log('Todos:', response.data)
   return { 
     todos:response.data.items,
     lastKey: response.data.lastKey

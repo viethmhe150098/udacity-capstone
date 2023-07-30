@@ -11,11 +11,12 @@ type EditTodoModalProps = {
   idToken: string
   todo?: Todo
 }
-
+const TYPE = "UPDATE"
 export default function EditTodoModal(props: EditTodoModalProps) {
 
   const handleSubmit = async (updateTodoReq: UpdateTodoRequest, file: any) => {
     const { idToken, todo } = props
+    console.log(todo);
     
     if(!todo) return
     
@@ -24,6 +25,20 @@ export default function EditTodoModal(props: EditTodoModalProps) {
       props.updateTodo({...todo, ...updateTodoReq})
       return;
     }
+    
+    const response = await getUploadUrl(idToken, todo.todoId);
+    console.log(response);
+    
+    try{
+      await uploadFile(response.uploadUrl, file)
+      todo.attachmentUrl = response.imageUrl
+      console.log("Attachment URL: "+todo.attachmentUrl);
+      
+    } catch (e) {
+      console.log(e)
+    } finally {
+      props.updateTodo(todo)
+    }
 
   }
 
@@ -31,5 +46,6 @@ export default function EditTodoModal(props: EditTodoModalProps) {
     {...props}
     header="Update TODO"
     onSubmit={handleSubmit}
+    type={TYPE}
   />
 }

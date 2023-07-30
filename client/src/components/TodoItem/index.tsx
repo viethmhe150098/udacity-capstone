@@ -59,7 +59,7 @@ function TodoItem({todo, onCheck, onDelete, onEdit, callbackRef} : TodoItemProp)
         </Button>
       </ActionTop>
       <Content>{todo.name}</Content>
-      { todo.attachmentUrl && 
+      { todo.attachmentUrl !== "" && 
         <Image src={todo.attachmentUrl} wrapped />}
       <Confirm 
         open={openConfirm}

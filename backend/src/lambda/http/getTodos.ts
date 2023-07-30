@@ -13,7 +13,6 @@ export const handler = middy(
     
     const userId = getUserId(event)
     const filter = event["queryStringParameters"]['filter']
-
     const result = await getTodosService(userId, filter)
 
     return {

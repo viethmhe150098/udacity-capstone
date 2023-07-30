@@ -10,7 +10,7 @@ type AddTodoModalProps = {
   addTodo: (todo: Todo) => void
   idToken: string
 }
-
+const TYPE = "create";
 export default function AddTodoModal(props: AddTodoModalProps) {
 
   const handleSubmit = async (createTodoReq: CreateTodoRequest, file: any) => {
@@ -20,11 +20,23 @@ export default function AddTodoModal(props: AddTodoModalProps) {
       props.addTodo(todo)
       return;
     }
+    const response = await getUploadUrl(idToken, todo.todoId);
+    try{
+      await uploadFile(response.uploadUrl, file)
+      todo.attachmentUrl = response.imageUrl
+    } catch (e) {
+      console.log(e)
+    } finally {
+      props.addTodo(todo)
+    }
   }
+
+ 
 
   return <TodoModal 
     {...props}
     header="Create TODO"
     onSubmit={handleSubmit}
+    type={TYPE}
   />
 }
